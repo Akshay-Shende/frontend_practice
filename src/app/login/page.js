@@ -1,35 +1,42 @@
-'use client';
-import { useState } from 'react';
-import useAuth from '@/appwriteServices/auth';
-import conf from '@/app/configue/configue';
-import { account } from '../appWrite';
+"use client";
+import { useState } from "react";
+import useAuth from "@/appwriteServices/auth";
+import { useSelector, useDispatch } from "react-redux";
+import { account } from "../appWrite";
+import { useRouter } from "next/navigation";
+import { addLogInUser, deleteLogInUser } from "@/features/logInUser/logInUserSlice";
+import NavLink from "@/_components/navLink";
 
 const Page = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useAuth();
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
-    console.log(conf.appwriteAPIKey);
-    console.log(conf.appwriteUrl);
-    
-  let loginResult =  await login(email,password);
-  console.log(loginResult);
-  };
+    e.preventDefault();
+    let loginResult = await login(email, password);
 
-  const logoutHandler = async () => {
-    try {
-      await account.deleteSession('current');
-      setLoggedInUser(null);
-    } catch (error) {
-      console.error('Logout failed:', error);
+    dispatch(
+      addLogInUser({
+        name: loginResult.name,
+        email: loginResult.email,
+        phone: loginResult.phone,
+        $id: loginResult.$id,
+      })
+    );
+    if (true) {
+      router.push("/home-page");
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form className="bg-white p-8 rounded shadow-md w-96" onSubmit={handleSubmit}>
+      <form
+        className="bg-white p-8 rounded shadow-md w-96"
+        onSubmit={handleSubmit}
+      >
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
         <div className="mb-4">
@@ -78,14 +85,11 @@ const Page = () => {
         </button>
 
         <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
-          <a href="#" className="text-blue-600 hover:underline">
-            Sign up
-          </a>
+          Don't have an account?{" "}
+          <NavLink href={"/registration"}>Sign up</NavLink>
+         
         </p>
       </form>
-
-      <button onClick={logoutHandler}>Logout</button>
     </div>
   );
 };

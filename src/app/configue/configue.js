@@ -5,6 +5,7 @@ const conf = {
     appwriteCollectionId: String(process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID),
     appwriteBucketId: String(process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID),
     appwriteAPIKey: String(process.env.NEXT_PUBLIC_APPWRITE_API_KEY),
+    appwriteRoleCollectionId: String(process.env.NEXT_PUBLIC_APPWRITE_ROLE_COLLECTION_ID),
     
 }
 export default conf;    
