@@ -21,9 +21,7 @@ const page = (context) => {
       dispatch(addPageData({ pageNo: pageNo, limit: limit }));
 ;  }, [page,limit,dispatch]);
 
-useEffect(() => { 
-  console.log(pathname +"--->"+searchParams.get("pageNo"));
-  
+useEffect(() => {  
   fetchPost();
 },[pageState.limit,pageState.pageNum])
 

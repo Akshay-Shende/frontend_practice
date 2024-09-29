@@ -14,7 +14,17 @@ const Header = () => {
         <li className="px-4">
           <NavLink href={"/posts"}> Posts</NavLink>
         </li>
+        <div className="flex justify-end items-end">
+        <li className="px-4 ">
+          <NavLink href={"/xyz"}>Home</NavLink>
+        </li>
+        <li className="px-4">
+          <NavLink href={"/sdc"}> Login</NavLink>
+        </li>
+        </div>
       </ul>
+
+
     </div>
   );
 };
