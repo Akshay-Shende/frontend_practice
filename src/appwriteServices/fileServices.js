@@ -50,7 +50,6 @@ const useFiles = () => {
   const getFilePreview = (fileId) => {
     try {
       const fileResult = storage.getFilePreview(bucketId, fileId).href;
-      console.log( "fileResult",fileResult);
       return fileResult;
     } catch (error) {
       console.log("Appwrite service :: getFilePreview :: error", error);
