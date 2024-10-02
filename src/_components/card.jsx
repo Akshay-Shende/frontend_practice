@@ -1,11 +1,13 @@
-const Card = () => {
+const Card = ({product}) => {
+  console.log(product);
+  
   return (
 <div className="rounded overflow-hidden shadow-lg bg-white w-64 h-30">
   <img className="w-full" src="https://via.placeholder.com/400x200" alt="Sample Image"/>
   <div className="px-6 py-4">
-    <div className="font-bold text-xl mb-2">Card Title</div>
+    <div className="font-bold text-xl mb-2">{product.ProductName}</div>
     <p className="text-gray-700 text-base">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum.
+     {product.ProductDescription}
     </p>
   </div>
   <div className="px-6 pt-4 pb-2">

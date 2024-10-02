@@ -1,22 +1,24 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from "@/_components/card";
 import InfiniteScroll from "react-infinite-scroll-component";
-
+import useProducts from '@/appwriteServices/productService';
 const Page = () => {
-  const [items, setItems] = useState(Array.from({ length: 20 }));
-  const [hasMore, setHasMore] = useState(true);
+  const [items, setItems] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
+  const { getProducts } = useProducts();
 
+  useEffect(() => {
+    (async () => {
+      const res = await getProducts();
+      setItems(res.documents);
+    })();
+  }, []);
   const fetchMoreData = () => {
-    if (items.length >= 200) {
-      setHasMore(false);
-      return;
-    }
-
-    // Simulate an API call
-    setTimeout(() => {
-      setItems((prevItems) => prevItems.concat(Array.from({ length: 20 })));
-    }, 1000);
+    // if (items.length >= 200) {
+    //   setHasMore(false);
+    //   return;
+    // }
   };
 
   return (
@@ -28,8 +30,8 @@ const Page = () => {
       endMessage={<p style={{ textAlign: 'center' }}>You've seen it all!</p>}
     >
       <div className="grid grid-cols-3 gap-12 justify-center mx-28">
-        {items.map((_, index) => (
-          <Card key={index} />
+        {items.map((item) => (
+          <Card key={item.$id} product={item}/>
         ))}
       </div>
     </InfiniteScroll>

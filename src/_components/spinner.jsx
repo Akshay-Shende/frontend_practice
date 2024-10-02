@@ -3,7 +3,7 @@ import React from 'react'
 const spinner = () => {
   return (
     <div>
-      Loading...
+      Loading Page...
     </div>
   )
 }

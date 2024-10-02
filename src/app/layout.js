@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { persistor } from "./store";
 import { PersistGate } from "redux-persist/integration/react";
+import { LoadingContextProvider } from "@/context/loadingContext";
 
 export default function RootLayout({ children }) {
   return (
@@ -12,7 +13,9 @@ export default function RootLayout({ children }) {
       <body>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
+            <LoadingContextProvider>
           <Layout>{children}</Layout>
+          </LoadingContextProvider>
           </PersistGate>
         </Provider>
       </body>

@@ -1,12 +1,15 @@
 "use client";
-import SelectOptions from "@/_components/selectOptions";
 import UserTable from "@/_components/userTable";
 import { useState, useEffect } from "react";
+import { useLoadingContext } from "@/context/loadingContext";
+import spinner from "@/_components/spinner";
 
 const page = () => {
   const [users, setUsers] = useState([]);
   const [masterUsers, setMasterUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+   const { loading, setLoading } = useLoadingContext();
 
   useEffect(() => {
     fetchUsers();
@@ -18,8 +21,10 @@ const page = () => {
   }, [searchTerm]);
 
   const fetchUsers = async () => {
+    setLoading(true);
     const res = await fetch("https://randomuser.me/api/?results=50");
     const data = await res.json();
+    setLoading(false);
     setUsers(data.results);
     setMasterUsers(data.results);
   };
@@ -47,7 +52,7 @@ const page = () => {
         />
         <p className="text-gray-500 ml-5 ms-4">{users.length} results found</p>
       </div>
-      <UserTable users={users} />
+      {loading?<spinner/>:<UserTable users={users} />}
     </>
   );
 };
