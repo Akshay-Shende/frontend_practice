@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { FaArrowLeft, FaArrowRight, FaFastBackward, FaFastForward } from 'react-icons/fa';
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
     const router = useRouter();
@@ -49,7 +49,7 @@ const page = () => {
     <>
     <div className="grid grid-cols-3 gap-12 justify-center mx-28">
       {items.map((item) => (
-        <UserCard title={item.title} description={item.body} />
+        <UserCard key={item.title} title={item.title} description={item.body} />
       ))}
     </div>
     <div className="flex justify-center items-center space-x-4 my-5">
@@ -70,4 +70,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

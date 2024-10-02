@@ -94,7 +94,7 @@ const Page = () => {
         </button>
 
         <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+        Don&apos;t have an account?
           <NavLink href={"/registration"}>Sign up</NavLink>
         </p>
       </form>

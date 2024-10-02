@@ -4,7 +4,7 @@ import useProducts from "@/appwriteServices/productService";
 import useFiles from "@/appwriteServices/fileServices";
 import { useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
   const { getManufacturers } = useManufacturer();
   const [manufacturers, setManufacturers] = useState([]);
   const [imagePreview, setImagePreview] = useState(
@@ -244,4 +244,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

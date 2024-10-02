@@ -36,7 +36,6 @@ const Page = () => {
       next={fetchMoreData}
       hasMore={hasMore}
       loader={<h4>Loading...</h4>}
-      endMessage={<p style={{ textAlign: 'center' }}>You've seen it all!</p>}
     >
       <div className="grid grid-cols-3 gap-12 justify-center mx-28">
         {items.map((item) => (

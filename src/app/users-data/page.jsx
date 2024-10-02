@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useLoadingContext } from "@/context/loadingContext";
 import spinner from "@/_components/spinner";
 
-const page = () => {
+const Page = () => {
   const [users, setUsers] = useState([]);
   const [masterUsers, setMasterUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,4 +57,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
