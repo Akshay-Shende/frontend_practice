@@ -1,6 +1,9 @@
-import {home} from "@/_components/home";
 const page = () => {
-  return home
+  return (
+    <div>
+      <h1>Home Page</h1>
+    </div>
+  )
 }
 
 export default page
