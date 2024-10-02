@@ -1,14 +1,14 @@
-import {createContext, useContext,useState} from 'react'
+"use client"
+import React, { createContext, useState } from 'react';
 
-const LoadingContext = createContext();
-export const LoadingContextProvider = ({children}) => {
+export const LoadingContext = createContext();
+
+export const LoadingProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
 
- return (
-    <LoadingContext.Provider value={{loading, setLoading}}>
+  return (
+    <LoadingContext.Provider value={{ loading, setLoading }}>
       {children}
     </LoadingContext.Provider>
-  )
-}
-
-export const useLoadingContext = () => useContext(LoadingContext);
+  );
+};

@@ -55,7 +55,7 @@ const Header = () => {
             </li>
           ) : (
             <>
-              <li className="px-4 cursor-pointer" onClick={logoutHandler}>
+              <li className="px-4 cursor-pointer" >
                 Hello {firstName}
               </li>
               <li className="px-4 cursor-pointer" onClick={logoutHandler}>

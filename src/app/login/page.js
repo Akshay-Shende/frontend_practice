@@ -1,11 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import useAuth from "@/appwriteServices/auth";
 import { useSelector, useDispatch } from "react-redux";
 import { account } from "../appWrite";
 import { useRouter } from "next/navigation";
-import { addLogInUser, deleteLogInUser } from "@/features/logInUser/logInUserSlice";
+import {
+  addLogInUser,
+  deleteLogInUser,
+} from "@/features/logInUser/logInUserSlice";
 import NavLink from "@/_components/navLink";
+import { LoadingContext } from "@/context/loadingContext";
+import Spinner from "@/_components/spinner";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -13,11 +18,12 @@ const Page = () => {
   const { login } = useAuth();
   const router = useRouter();
   const dispatch = useDispatch();
-
+  const { loading, setLoading } = useContext(LoadingContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     let loginResult = await login(email, password);
-
+    setLoading(false);
     dispatch(
       addLogInUser({
         name: loginResult.name,
@@ -31,6 +37,9 @@ const Page = () => {
     }
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form
@@ -87,7 +96,6 @@ const Page = () => {
         <p className="mt-4 text-center text-sm text-gray-600">
           Don't have an account?{" "}
           <NavLink href={"/registration"}>Sign up</NavLink>
-         
         </p>
       </form>
     </div>

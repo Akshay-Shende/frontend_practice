@@ -1,17 +1,22 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Card from "@/_components/card";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useProducts from '@/appwriteServices/productService';
+import { LoadingContext } from '@/context/loadingContext';
+import Spinner from '@/_components/spinner';
+
 const Page = () => {
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const { getProducts } = useProducts();
-
+  const { loading, setLoading } = useContext(LoadingContext);
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const res = await getProducts();
       setItems(res.documents);
+      setLoading(false);
     })();
   }, []);
   const fetchMoreData = () => {
@@ -20,6 +25,10 @@ const Page = () => {
     //   return;
     // }
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <InfiniteScroll

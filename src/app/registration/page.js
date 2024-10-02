@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import useAuth from "@/appwriteServices/auth";
 import useRoles from "@/appwriteServices/roleServices";
-import { account } from "../appWrite";
-
+import { LoadingContext } from "@/context/loadingContext";
+import Spinner from "@/_components/spinner";
 const Page = () => {
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
@@ -14,12 +14,15 @@ const Page = () => {
 
   const { registerUser } = useAuth();
   const { getRoles } = useRoles();
+  const { loading, setLoading } = useContext(LoadingContext);
 
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         const roles = await getRoles();
         setRoles(roles.documents);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching roles:", error);
       }
@@ -34,6 +37,9 @@ const Page = () => {
     await registerUser(email, mobile, password, name,role);
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form
