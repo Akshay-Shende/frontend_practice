@@ -1,4 +1,4 @@
-import { Client, Account, Databases,ID } from 'appwrite';
+import { Client, Account, Databases,ID, Storage } from 'appwrite';
 import conf from './configue/configue';
 
 // Initialize Appwrite client
@@ -8,5 +8,6 @@ const client    = new Client()
           
 const account   = new Account(client);
 const databases = new Databases(client);
+const storage   = new Storage(client);
 
-export { client, account, databases, ID };
+export { client, account, databases, ID, storage };

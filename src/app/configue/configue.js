@@ -8,5 +8,6 @@ const conf = {
     appwriteRoleCollectionId: String(process.env.NEXT_PUBLIC_APPWRITE_ROLE_COLLECTION_ID),
     appwriteProductCollectionId: String(process.env.NEXT_PUBLIC_APPWRITE_PRODUCT_COLLECTION_ID),
     appwriteManufacturerCollectionId: String(process.env.NEXT_PUBLIC_APPWRITE_MANUFACTURER_COLLECTION_ID),
+    appwriteProductBucketId: String(process.env.NEXT_PUBLIC_APPWRITE_PRODUCT_BUCKET_ID),
 }
 export default conf;    

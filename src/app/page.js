@@ -1,11 +1,17 @@
 "use client";
 import useManufacturer from "@/appwriteServices/ManufacturerService";
 import useProducts from "@/appwriteServices/productService";
+import useFiles from "@/appwriteServices/fileServices";
 import { useEffect, useState } from "react";
 
 const page = () => {
   const { getManufacturers } = useManufacturer();
   const [manufacturers, setManufacturers] = useState([]);
+  const [imagePreview, setImagePreview] = useState(
+    "https://via.placeholder.com/150"
+  );
+  const [image, setImage] = useState(null);
+
   useEffect(() => {
     (async () => {
       const res = await getManufacturers();
@@ -14,6 +20,8 @@ const page = () => {
   }, []);
 
   const { createProduct } = useProducts();
+  const { createFile }    = useFiles();
+
   const [product, setProduct] = useState({
     ProductName: "",
     ProductDescription: "",
@@ -27,7 +35,10 @@ const page = () => {
   const submitProduct = async (e) => {
     e.preventDefault();
     //By default Number also considering as a string so, passing parameter like this.
-    const res = await createProduct({
+    const res = await createFile(image);
+    console.log(res);
+    if (res.$id) {
+    const productRes = await createProduct({
       ProductName: product.ProductName,
       ProductDescription: product.ProductDescription,
       ProductSize: product.ProductSize,
@@ -35,7 +46,22 @@ const page = () => {
       ProductInventoryLevel: Number(product.ProductInventoryLevel),
       ProductPrice: Number(product.ProductPrice),
       ManuId: product.ManuId,
+      ProductImageUrl: res.$id,
     });
+  }};
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImagePreview(reader.result); // Set the preview URL
+    };
+
+    if (file) {
+      reader.readAsDataURL(file); // Convert the image to base64 URL
+    }
   };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -163,6 +189,28 @@ const page = () => {
               setProduct({ ...product, [e.target.name]: e.target.value })
             }
           />
+        </div>
+
+        <div className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow-lg">
+          {/* Image preview */}
+          <div className="w-40 h-40 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center">
+            <img
+              src={imagePreview}
+              alt="Current Image"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          {/* Upload button */}
+          <label className="mt-4 cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            Upload New Image
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+            />
+          </label>
         </div>
 
         <select
