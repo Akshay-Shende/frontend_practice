@@ -45,10 +45,11 @@ const Header = () => {
         <li className="px-4">
           <NavLink href={"/posts"}> Posts</NavLink>
         </li>
-        <div className="flex justify-end items-end">
-          <li className="px-4 ">
-            <NavLink href={"/xyz"}>About Us</NavLink>
+        <li className="px-4 ">
+            <NavLink href={"/about-us"}>About Us</NavLink>
           </li>
+        <div className="flex justify-end items-end">
+         
           {userData.id == 0 ? (
             <li className="px-4">
               <NavLink href={"/login"}> Login</NavLink>
