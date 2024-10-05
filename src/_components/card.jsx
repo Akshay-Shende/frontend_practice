@@ -1,7 +1,26 @@
+import useCart from "@/appwriteServices/cartServices";
 import useFiles from "@/appwriteServices/fileServices";
-const Card = ({ product }) => {
-  const { getFilePreview, getFileView } = useFiles();
+import useWishlist from "@/appwriteServices/wishlistServices";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
+const Card = ({ product }) => {
+  const { getFilePreview } = useFiles();
+const {addToWishlist} = useWishlist();
+  const userId = useSelector(state => state.logInUserReducer.user.id);
+
+  const addToWishlistFunction = () => {
+    console.log("wishlist");
+    
+    const wishlist ={UserId : userId,ProductId : product.$id, AddedOn : Date.now()};
+    try {
+   const resultData =  addToWishlist(wishlist);
+   return resultData;
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="rounded overflow-hidden shadow-lg bg-white w-64 h-30">
@@ -15,15 +34,20 @@ const Card = ({ product }) => {
         <p className="text-gray-700 text-base">{product.ProductDescription}</p>
       </div>
       <div className="px-6 pt-4 pb-2">
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #tag1
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #tag2
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #tag3
-        </span>
+        <div className="pb-2">
+          <button className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+          
+          >
+            Add to Cart
+          </button>
+          <button className="py-1 px-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition duration-200"
+          onClick={
+            addToWishlistFunction
+          }
+          >
+            Wishlist
+          </button>
+        </div>
       </div>
     </div>
   );
