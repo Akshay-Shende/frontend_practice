@@ -11,6 +11,7 @@ import {
 import NavLink from "@/_components/navLink";
 import { LoadingContext } from "@/context/loadingContext";
 import Spinner from "@/_components/spinner";
+import { Role } from "appwrite";
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -23,6 +24,8 @@ const Page = () => {
     e.preventDefault();
     setLoading(true);
     let loginResult = await login(email, password);
+     console.log(loginResult);
+     
     setLoading(false);
     dispatch(
       addLogInUser({
@@ -30,6 +33,7 @@ const Page = () => {
         email: loginResult.email,
         phone: loginResult.phone,
         $id: loginResult.$id,
+        role: loginResult.prefs.Role,
       })
     );
     if (true) {
