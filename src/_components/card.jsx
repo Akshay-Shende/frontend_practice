@@ -5,10 +5,13 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa6";
+import { useEffect, useState } from "react";
 
 const Card = ({ product }) => {
   const { getFilePreview } = useFiles();
   const { addToWishlist } = useWishlist();
+ const [qty, setQty] = useState(0);
+
   const userId = useSelector((state) => state.logInUserReducer.user.id);
 
   const addToWishlistFunction = () => {
@@ -49,9 +52,9 @@ const Card = ({ product }) => {
       <div className="px-6 pt-4 pb-2">
 
     <div className="flex justify-between py-3 px-4">
-      <button><FaPlus/></button>
-      <span>2</span>
-      <button><FaMinus/></button>
+      <button onClick = {()=> setQty(prev=> prev+1)}><FaPlus/></button>
+      <span>{qty}</span>
+      <button onClick = {() => setQty(prev => prev>0?prev-1:0)}><FaMinus/></button>
     </div>
 
         <div className="pb-2">
