@@ -23,9 +23,7 @@ const Page = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    let loginResult = await login(email, password);
-     console.log(loginResult);
-     
+    let loginResult = await login(email, password);     
     setLoading(false);
     dispatch(
       addLogInUser({

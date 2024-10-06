@@ -1,17 +1,14 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect,useState,useContext } from "react";
 import NavLink from "./navLink";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
-import {
-  addLogInUser,
-  deleteLogInUser,
-} from "@/features/logInUser/logInUserSlice";
+import {deleteLogInUser} from "@/features/logInUser/logInUserSlice";
 import { account } from "@/app/appWrite";
 import { useRouter } from "next/navigation";
-import SelectOptions from "./selectOptions";
+import { LoadingContext } from "@/context/loadingContext";
 
 const Header = () => {
+  const { loading, setLoading } = useContext(LoadingContext);
   const [userData, setUserData] = useState(0);
   const [firstName, setFirstName] = useState("");
   const user = useSelector((state) => state.logInUserReducer.user);
@@ -25,9 +22,11 @@ const Header = () => {
 
   const logoutHandler = async () => {
     try {
+      setLoading(true);
       await account.deleteSession("current");
       dispatch(deleteLogInUser());
       localStorage.removeItem("persist:root");
+      setLoading(false);
       router.push("/login");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -107,7 +106,7 @@ const Header = () => {
           </li>
 
           <li className="px-4">
-            <NavLink href={"/cart"}>Cart</NavLink>
+            <NavLink href={`/cart/${user.id}`}>Cart</NavLink>
           </li>
 
           <div className="flex justify-end items-end">
