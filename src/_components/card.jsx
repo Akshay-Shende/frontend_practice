@@ -6,13 +6,18 @@ import { FaHeart } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
+import useCart from "@/appwriteServices/cartServices";
+import { LoadingContext } from '@/context/loadingContext';
+import { useContext } from "react";
 
 const Card = ({ product }) => {
   const { getFilePreview } = useFiles();
   const { addToWishlist } = useWishlist();
+  const{addToCart} = useCart();
  const [qty, setQty] = useState(0);
 
   const userId = useSelector((state) => state.logInUserReducer.user.id);
+  const { loading, setLoading } = useContext(LoadingContext);
 
   const addToWishlistFunction = () => {
     console.log("wishlist");
@@ -28,6 +33,20 @@ const Card = ({ product }) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const addToCartFunction = async() => {
+    const cart = {
+     ProductId: product.$id,
+     UserId: userId,
+     Qty: qty,
+     AddedOn: new Date().toISOString()
+    };
+
+    setLoading(true);
+    const cartResult = await addToCart(cart);
+    setLoading(false);
+    console.log(cartResult);
   };
 
   return (
@@ -58,7 +77,7 @@ const Card = ({ product }) => {
     </div>
 
         <div className="pb-2">
-          <button className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200">
+          <button className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200" onClick={addToCartFunction}>
             Add to Cart
           </button>
         </div>
