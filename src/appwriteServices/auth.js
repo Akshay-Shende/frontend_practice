@@ -68,6 +68,19 @@ const useAuth = () => {
     }
   };
 
+  const allUserBySearch = async (searchTerm) => {
+    try {
+      const usersData = await users.list([], searchTerm);
+      return usersData;
+    } catch (error) {
+      console.error("Failed to fetch users:", error);
+      return [];
+    }
+  };
+
+
+
+  
   return {
     loggedInUser,
     email,
@@ -77,6 +90,7 @@ const useAuth = () => {
     registerUser,
     logout,
     allUsers,
+    allUserBySearch,
   };
 };
 
