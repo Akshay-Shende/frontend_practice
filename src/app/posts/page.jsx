@@ -68,7 +68,7 @@ const Page = () => {
   </div>
     <div className="grid grid-cols-3 gap-12 justify-center mx-28">
       {items.map((item) => (
-        <UserCard title={item.title} description={item.body} />
+        <UserCard key = {item.title} title={item.title} description={item.body} />
       ))}
     </div>
     <div className="flex justify-center items-center space-x-4 my-5">
