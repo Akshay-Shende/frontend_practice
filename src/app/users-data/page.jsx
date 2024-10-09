@@ -1,43 +1,40 @@
 "use client";
-import SelectOptions from "@/_components/selectOptions";
+import useAuth from "@/appwriteServices/auth";
+import { useEffect, useState, useContext } from "react";
 import UserTable from "@/_components/userTable";
-import { useState, useEffect } from "react";
+import { LoadingContext } from "@/context/loadingContext";
+import useDebouncing from "@/customHooks/useDebouncing";
+import Spinner from "@/_components/spinner";
 
-const page = () => {
+const Page = () => {
+  const { allUsers, allUserBySearch } = useAuth();
   const [users, setUsers] = useState([]);
-  const [masterUsers, setMasterUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { loading, setLoading } = useContext(LoadingContext);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const debouncedSearchTerm = useDebouncing(searchTerm);
 
-  useEffect(() => {
-    filterUsers();
-    console.log(searchTerm);
-  }, [searchTerm]);
+  useEffect( () => {
+    (async()=>{
+      setLoading(true);
+      if (!debouncedSearchTerm) {
+        console.log("with empty string");
+        
+        const resultData = await allUsers();
+        setUsers((e) => resultData.users);
+        setLoading(false);
+      }else{
+        setLoading(true);
+      const resultData = await allUserBySearch(debouncedSearchTerm);
+      setUsers((e) => resultData.users);
+      setLoading(false);
+      }})()
+   
+  }, [debouncedSearchTerm]);
 
-  const fetchUsers = async () => {
-    const res = await fetch("https://randomuser.me/api/?results=50");
-    const data = await res.json();
-    setUsers(data.results);
-    setMasterUsers(data.results);
-  };
-
-  const filterUsers = () => {
-    setUsers(() =>
-      masterUsers.filter((user) =>
-        user.name.first.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.name.last.toLowerCase().includes(searchTerm.toLowerCase())  ||
-        user.location.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  };
-
-  return (
-    <>
-      <div className="flex justify-center items-center">
+  if(loading)  return <Spinner/>
+  return (<div>
+    <div className="flex justify-center items-center">
         <input
           type="text"
           value={searchTerm}
@@ -45,11 +42,10 @@ const page = () => {
           className="my-3 pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           placeholder="Search..."
         />
-        <p className="text-gray-500 ml-5 ms-4">{users.length} results found</p>
+        <p className="text-gray-500 ml-5 ms-4">{users?.length} results found</p>
       </div>
-      <UserTable users={users} />
-    </>
-  );
+    <UserTable users={users} />
+  </div>);
 };
 
-export default page;
+export default Page;
