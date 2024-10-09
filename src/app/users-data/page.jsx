@@ -34,7 +34,7 @@ const Page = () => {
 
   if(loading)  return <Spinner/>
   return (<div>
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center ">
         <input
           type="text"
           value={searchTerm}
