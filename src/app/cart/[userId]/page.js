@@ -20,11 +20,13 @@ const Page = () => {
   const [result, setResult] = useState([]);
 
   const { userId } = useParams();
-  useEffect(async () => {
+  useEffect( () => {
+    (async ()=>{
     setLoading(true);
     let result = await getCartAndProductByUserId(String(userId));
     setResult(result);
     setLoading(false);
+    })()
   }, []);
   if (loading) {
     return <Spinner />;

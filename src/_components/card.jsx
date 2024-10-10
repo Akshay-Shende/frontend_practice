@@ -9,15 +9,27 @@ import { useEffect, useState } from "react";
 import useCart from "@/appwriteServices/cartServices";
 import { LoadingContext } from '@/context/loadingContext';
 import { useContext } from "react";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-const Card = ({ product }) => {
+const Card = ({ product,cartData }) => {
   const { getFilePreview } = useFiles();
   const { addToWishlist } = useWishlist();
   const{addToCart} = useCart();
- const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(0);
 
   const userId = useSelector((state) => state.logInUserReducer.user.id);
   const { loading, setLoading } = useContext(LoadingContext);
+
+  // useEffect(() => {
+  //   console.log("cartData", cartData);
+    
+  //   if (cartData) {
+  //     console.log("cartData", cartData);
+      
+  //     setQty(cartData.Qty);
+  //   }
+  // }, [cartData]);
+
 
   const addToWishlistFunction = () => {
     console.log("wishlist");
@@ -46,7 +58,7 @@ const Card = ({ product }) => {
     setLoading(true);
     const cartResult = await addToCart(cart);
     setLoading(false);
-    console.log(cartResult);
+
   };
 
   return (
@@ -72,14 +84,16 @@ const Card = ({ product }) => {
 
     <div className="flex justify-between py-3 px-4">
       <button onClick = {()=> setQty(prev=> prev+1)}><FaPlus/></button>
-      <span>{qty}</span>
+      <span>{ qty}</span>
       <button onClick = {() => setQty(prev => prev>0?prev-1:0)}><FaMinus/></button>
     </div>
 
         <div className="pb-2">
-          <button className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200" onClick={addToCartFunction}>
+          {cartData?<button className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200" onClick={addToCartFunction}>
             Add to Cart
-          </button>
+          </button> : <button className="py-1 px-2 me-6 bg-red-600 text-white rounded hover:bg-red-700 transition duration-200" onClick={addToCartFunction}>
+          Delete
+          </button>}
         </div>
       </div>
     </div>

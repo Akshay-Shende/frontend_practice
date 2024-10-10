@@ -120,6 +120,21 @@ const useCart = () => {
     }  
   };
 
+  const getCartByUserId = async (userId) => {
+    console.log(userId);
+    
+    try {
+      const cartResult = await databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwritecartCollectionId,
+        [Query.equal("UserId", userId)]
+      );
+      return cartResult;
+    } catch (error) {
+      console.log("Appwrite service :: getCartByUserId :: error", error);
+      return false;
+    }
+  }
   return {
     getCart,
     addToCart,
@@ -127,6 +142,7 @@ const useCart = () => {
     deleteCart,
     getCartAndProductByUserId,
     getCartAndProductByUser,
+    getCartByUserId
   };
 };
 export default useCart;
