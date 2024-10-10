@@ -20,15 +20,14 @@ const Card = ({ product,cartData }) => {
   const userId = useSelector((state) => state.logInUserReducer.user.id);
   const { loading, setLoading } = useContext(LoadingContext);
 
-  // useEffect(() => {
-  //   console.log("cartData", cartData);
+  useEffect(() => {
+    console.log("cartDataCarddd", cartData);
     
-  //   if (cartData) {
-  //     console.log("cartData", cartData);
-      
-  //     setQty(cartData.Qty);
-  //   }
-  // }, [cartData]);
+     if (cartData.length>0) {
+       console.log("cartData", cartData[0].Qty);
+      setQty(cartData[0].Qty);
+     }
+  }, [cartData]);
 
 
   const addToWishlistFunction = () => {
@@ -89,7 +88,7 @@ const Card = ({ product,cartData }) => {
     </div>
 
         <div className="pb-2">
-          {cartData?<button className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200" onClick={addToCartFunction}>
+          {!cartData.length>0?<button className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200" onClick={addToCartFunction}>
             Add to Cart
           </button> : <button className="py-1 px-2 me-6 bg-red-600 text-white rounded hover:bg-red-700 transition duration-200" onClick={addToCartFunction}>
           Delete

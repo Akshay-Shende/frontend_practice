@@ -14,15 +14,8 @@ const Page = () => {
   const [cartData, setCartData] = useState([]);
   const { getProducts } = useProducts();
   const { getCartByUserId } = useCart();
-
   const userId = useSelector((state) => state.logInUserReducer.user.id);
-
-
   const { loading, setLoading } = useContext(LoadingContext);
-
-  // useEffect(()=>{
-  //   console.log(cartData);
-  // },[])
 
   useEffect(() => {
     (async () => {
