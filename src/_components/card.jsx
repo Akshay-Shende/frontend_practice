@@ -7,14 +7,14 @@ import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import useCart from "@/appwriteServices/cartServices";
-import { LoadingContext } from '@/context/loadingContext';
+import { LoadingContext } from "@/context/loadingContext";
 import { useContext } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-const Card = ({ product,cartData }) => {
+const Card = ({ product, cartData }) => {
   const { getFilePreview } = useFiles();
   const { addToWishlist } = useWishlist();
-  const{addToCart} = useCart();
+  const { addToCart } = useCart();
   const [qty, setQty] = useState(0);
 
   const userId = useSelector((state) => state.logInUserReducer.user.id);
@@ -22,13 +22,12 @@ const Card = ({ product,cartData }) => {
 
   useEffect(() => {
     console.log("cartDataCarddd", cartData);
-    
-     if (cartData.length>0) {
-       console.log("cartData", cartData[0].Qty);
-      setQty(cartData[0].Qty);
-     }
-  }, [cartData]);
 
+    // if (cartData.length > 0) {
+    //   console.log("cartData", cartData[0].Qty);
+    //   setQty(cartData[0].Qty);
+    // }
+  }, []);
 
   const addToWishlistFunction = () => {
     console.log("wishlist");
@@ -46,18 +45,17 @@ const Card = ({ product,cartData }) => {
     }
   };
 
-  const addToCartFunction = async() => {
+  const addToCartFunction = async () => {
     const cart = {
-     ProductId: product.$id,
-     UserId: userId,
-     Qty: qty,
-     AddedOn: new Date().toISOString()
+      ProductId: product.$id,
+      UserId: userId,
+      Qty: qty,
+      AddedOn: new Date().toISOString(),
     };
 
     setLoading(true);
     const cartResult = await addToCart(cart);
     setLoading(false);
-
   };
 
   return (
@@ -80,19 +78,32 @@ const Card = ({ product,cartData }) => {
         <p className="text-gray-700 text-base">{product.ProductDescription}</p>
       </div>
       <div className="px-6 pt-4 pb-2">
-
-    <div className="flex justify-between py-3 px-4">
-      <button onClick = {()=> setQty(prev=> prev+1)}><FaPlus/></button>
-      <span>{ qty}</span>
-      <button onClick = {() => setQty(prev => prev>0?prev-1:0)}><FaMinus/></button>
-    </div>
+        <div className="flex justify-between py-3 px-4">
+          <button onClick={() => setQty((prev) => prev + 1)}>
+            <FaPlus />
+          </button>
+          <span>{qty}</span>
+          <button onClick={() => setQty((prev) => (prev > 0 ? prev - 1 : 0))}>
+            <FaMinus />
+          </button>
+        </div>
 
         <div className="pb-2">
-          {!cartData.length>0?<button className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200" onClick={addToCartFunction}>
-            Add to Cart
-          </button> : <button className="py-1 px-2 me-6 bg-red-600 text-white rounded hover:bg-red-700 transition duration-200" onClick={addToCartFunction}>
-          Delete
-          </button>}
+          {!cartData.length > 0 ? (
+            <button
+              className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+              onClick={addToCartFunction}
+            >
+              Add to Cart
+            </button>
+          ) : (
+            <button
+              className="py-1 px-2 me-6 bg-red-600 text-white rounded hover:bg-red-700 transition duration-200"
+              onClick={addToCartFunction}
+            >
+              Delete
+            </button>
+          )}
         </div>
       </div>
     </div>
