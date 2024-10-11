@@ -73,7 +73,6 @@ const useCart = () => {
       console.log(cartResult.documents);
       const cartWithProductDetails = await Promise.all(
         cartResult.documents.map(async (cartItem) => {
-          console.log(cartItem.ProductId);
           const productDetails = await getProduct(cartItem.ProductId);
           return {
             ...cartItem,
@@ -121,8 +120,6 @@ const useCart = () => {
   };
 
   const getCartByUserId = async (userId) => {
-    console.log(userId);
-    
     try {
       const cartResult = await databases.listDocuments(
         conf.appwriteDatabaseId,
