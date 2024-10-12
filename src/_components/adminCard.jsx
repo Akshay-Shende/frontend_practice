@@ -69,7 +69,8 @@ const AdminCard = ({ product }) => {
         <div className="py-3">
             <button
               className="py-1 px-2 me-6 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition duration-200"        
-            >
+           onClick={()=>router.push(`/update-product/${product.$id}`)}
+           >
              Update
             </button>
       
