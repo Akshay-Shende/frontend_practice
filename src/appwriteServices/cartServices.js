@@ -100,10 +100,7 @@ const useCart = () => {
         cartResult.documents.map(async (cartItem) => {
           const productDetails = await getProduct(cartItem.ProductId);
           productDetails.documents.map(async (product) => {
-          const manufacturer = await getManufacturer(product.ManuId);
-          console.log(manufacturer);
-          
-          ;
+          const manufacturer = await getManufacturer(product.ManuId);        
           return {
             ...cartItem,
             productDetails,

@@ -1,6 +1,8 @@
 import conf from "@/app/configue/configue";
 import { databases ,ID } from "@/app/appWrite";
+import useManufacturer from "./ManufacturerService";
 const useProducts = () => {
+  const { getManufacturer } = useManufacturer();
   const productCollectionId = conf.appwriteProductCollectionId;
 
   const getProducts = async () => {
@@ -72,12 +74,37 @@ const useProducts = () => {
     }
   };
 
+  const getProductIncludeManufacturer = async () => {
+    try {
+      const productResult = await databases.listDocuments(
+        conf.appwriteDatabaseId,
+        conf.appwriteProductCollectionId
+      );
+      const getProductResultWithManufacturer = await Promise.all(
+        productResult.documents.map(async (productItem) => {
+          const manufacturerDetails = await getManufacturer(productItem.ManuId);
+         return {
+            ...productItem,
+            manufacturerDetails,
+          };
+        })
+      );
+
+      return getProductResultWithManufacturer;
+    } catch (error) {
+      console.log("Appwrite service :: getCartByUserId :: error", error);
+      return false;
+    }  
+  };
+
+
   return {
     getProducts,
     createProduct,
     updateProduct,
     deleteProduct,
     getProduct,
+    getProductIncludeManufacturer,
   };
 };
 export default useProducts;
