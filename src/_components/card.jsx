@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 const Card = ({ product, cartData }) => {
   const { getFilePreview } = useFiles();
   const { addToWishlist } = useWishlist();
-  const { addToCart } = useCart();
+  const { addToCart, deleteCart } = useCart();
   const [qty, setQty] = useState(0);
   const router = useRouter();
   const userId = useSelector((state) => state.logInUserReducer.user.id);
@@ -24,8 +24,6 @@ const Card = ({ product, cartData }) => {
   const { loading, setLoading } = useContext(LoadingContext);
 
   useEffect(() => {
-    console.log("cartDataCarddd", cartData);
-
     // if (cartData.length > 0) {
     //   console.log("cartData", cartData[0].Qty);
     //   setQty(cartData[0].Qty);
@@ -49,7 +47,6 @@ const Card = ({ product, cartData }) => {
   };
 
   const addToCartFunction = async () => {
-
     if(userId == 0){
       router.push("/login");
       return;
@@ -66,6 +63,14 @@ const Card = ({ product, cartData }) => {
     const cartResult = await addToCart(cart);
     dispatch(increaseCartCount())
     setLoading(false);
+  };
+  const removeFromCart = async () => {
+    if(cartData.length > 0) {
+      setLoading(true);
+      const cartResult = await  deleteCart(cartData[0].$id);
+      dispatch(decreaseCartCount())
+      setLoading(false);
+    }
   };
 
   return (
@@ -109,7 +114,7 @@ const Card = ({ product, cartData }) => {
           ) : (
             <button
               className="py-1 px-2 me-6 bg-red-600 text-white rounded hover:bg-red-700 transition duration-200"
-              onClick={addToCartFunction}
+              onClick={removeFromCart}
             >
               Delete
             </button>

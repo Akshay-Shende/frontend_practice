@@ -16,6 +16,7 @@ const Page = () => {
   const { getProducts } = useProducts();
   const { getCartByUserId } = useCart();
   const userId = useSelector((state) => state.logInUserReducer.user.id);
+  const cartCount = useSelector((state) => state.cartReducer.cartCount);
   const { loading, setLoading } = useContext(LoadingContext);
   const dispatch = useDispatch();
 
@@ -40,7 +41,7 @@ const Page = () => {
         setLoading(false);
       }
     })();
-  }, [userId]);
+  }, [userId,cartCount]);
 
   const fetchMoreData = () => {
     // if (items.length >= 200) {
