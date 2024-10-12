@@ -11,14 +11,14 @@ import { LoadingContext } from "@/context/loadingContext";
 import { useContext } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { increaseCartCount, decreaseCartCount } from "@/features/cart/cartSlice";
-
+import { useRouter } from "next/navigation";
 
 const Card = ({ product, cartData }) => {
   const { getFilePreview } = useFiles();
   const { addToWishlist } = useWishlist();
   const { addToCart } = useCart();
   const [qty, setQty] = useState(0);
-
+  const router = useRouter();
   const userId = useSelector((state) => state.logInUserReducer.user.id);
   const dispatch = useDispatch();
   const { loading, setLoading } = useContext(LoadingContext);
@@ -49,6 +49,12 @@ const Card = ({ product, cartData }) => {
   };
 
   const addToCartFunction = async () => {
+
+    if(userId == 0){
+      router.push("/login");
+      return;
+    }
+
     const cart = {
       ProductId: product.$id,
       UserId: userId,
