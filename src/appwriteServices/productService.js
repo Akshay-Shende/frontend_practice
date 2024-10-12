@@ -61,7 +61,7 @@ const useProducts = () => {
   };
 
   const getProduct = async (productId) => {
-    try {
+    try {   
       const productResult = await databases.getDocument(
         conf.appwriteDatabaseId,
         productCollectionId,
