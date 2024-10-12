@@ -34,7 +34,9 @@ const Page = () => {
         role: loginResult.prefs.Role,
       })
     );
-    if (true) {
+    if (loginResult.prefs.Role === "superAdmin") {
+      router.push("/admin-home-page");
+    }else{
       router.push("/home-page");
     }
   };

@@ -96,8 +96,6 @@ const useProducts = () => {
       return false;
     }  
   };
-
-
   return {
     getProducts,
     createProduct,
