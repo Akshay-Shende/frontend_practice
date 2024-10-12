@@ -1,6 +1,6 @@
 import useFiles from "@/appwriteServices/fileServices";
 import useWishlist from "@/appwriteServices/wishlistServices";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
@@ -10,6 +10,8 @@ import useCart from "@/appwriteServices/cartServices";
 import { LoadingContext } from "@/context/loadingContext";
 import { useContext } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { increaseCartCount, decreaseCartCount } from "@/features/cart/cartSlice";
+
 
 const Card = ({ product, cartData }) => {
   const { getFilePreview } = useFiles();
@@ -18,6 +20,7 @@ const Card = ({ product, cartData }) => {
   const [qty, setQty] = useState(0);
 
   const userId = useSelector((state) => state.logInUserReducer.user.id);
+  const dispatch = useDispatch();
   const { loading, setLoading } = useContext(LoadingContext);
 
   useEffect(() => {
@@ -55,6 +58,7 @@ const Card = ({ product, cartData }) => {
 
     setLoading(true);
     const cartResult = await addToCart(cart);
+    dispatch(increaseCartCount())
     setLoading(false);
   };
 
@@ -92,7 +96,7 @@ const Card = ({ product, cartData }) => {
           {!cartData.length > 0 ? (
             <button
               className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
-              onClick={addToCartFunction}
+              onClick={addToCartFunction }
             >
               Add to Cart
             </button>

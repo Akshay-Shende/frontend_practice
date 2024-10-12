@@ -2,6 +2,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import paginationReducer  from "@/features/pagination/paginationSlice";
 import logInUserReducer   from "@/features/logInUser/logInUserSlice";
+import cartReducer from "@/features/cart/cartSlice";
 
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage
 import { persistStore, persistReducer } from 'redux-persist';
@@ -15,6 +16,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   paginationReducer,
   logInUserReducer,
+  cartReducer,
+
   // Add other reducers here
 });
 

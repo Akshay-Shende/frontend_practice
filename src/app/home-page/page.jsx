@@ -6,7 +6,8 @@ import useProducts from "@/appwriteServices/productService";
 import { LoadingContext } from "@/context/loadingContext";
 import Spinner from "@/_components/spinner";
 import useCart from "@/appwriteServices/cartServices";
-import { useSelector } from "react-redux";
+import { setCartCount } from "@/features/cart/cartSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Page = () => {
   const [items, setItems] = useState([]);
@@ -16,6 +17,7 @@ const Page = () => {
   const { getCartByUserId } = useCart();
   const userId = useSelector((state) => state.logInUserReducer.user.id);
   const { loading, setLoading } = useContext(LoadingContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -23,12 +25,13 @@ const Page = () => {
         setLoading(true);
         const res = await getProducts();
         console.log(userId);
-        if(!userId == 0) {
-        const cart = await getCartByUserId(userId);
-        let cartProduct = cart.documents.map((item) => item);
-        console.log(cartProduct);
+        if (!userId == 0) {
+          const cart = await getCartByUserId(userId);
+          dispatch(setCartCount(cart.documents.length));
+          let cartProduct = cart.documents.map((item) => item);
+          console.log(cartProduct);
 
-        setCartData(cartProduct);
+          setCartData(cartProduct);
         }
         setItems(res.documents);
       } catch (error) {

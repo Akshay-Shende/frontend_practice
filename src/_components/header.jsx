@@ -1,8 +1,8 @@
 "use client";
-import { useEffect,useState,useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import NavLink from "./navLink";
 import { useSelector, useDispatch } from "react-redux";
-import {deleteLogInUser} from "@/features/logInUser/logInUserSlice";
+import { deleteLogInUser } from "@/features/logInUser/logInUserSlice";
 import { account } from "@/app/appWrite";
 import { useRouter } from "next/navigation";
 import { LoadingContext } from "@/context/loadingContext";
@@ -12,6 +12,7 @@ const Header = () => {
   const [userData, setUserData] = useState(0);
   const [firstName, setFirstName] = useState("");
   const user = useSelector((state) => state.logInUserReducer.user);
+  const cartCount = useSelector((state) => state.cartReducer.cartCount);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -96,8 +97,8 @@ const Header = () => {
           <li className="px-4 ">
             <NavLink href={"/home-page"}>Home</NavLink>
           </li>
-        
-         <li className="px-4">
+
+          <li className="px-4">
             <NavLink href={"/about-us"}>About Us</NavLink>
           </li>
 
@@ -105,9 +106,18 @@ const Header = () => {
             <NavLink href={"/wishlist"}>WishList</NavLink>
           </li>
 
-          <li className="px-4">
-            <NavLink href={`/cart/${user.id}`}>Cart</NavLink>
-          </li>
+          <li className="px-4 relative">
+          <NavLink href={`/cart/${user.id}`} className="relative">
+  Cart
+  {cartCount > 0 && (
+    <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-green-600 rounded-full z-10">
+      {cartCount}
+    </span>
+  )}
+</NavLink>
+
+</li>
+
 
           <div className="flex justify-end items-end">
             {userData.id == 0 ? (
