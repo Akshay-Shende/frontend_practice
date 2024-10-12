@@ -39,7 +39,7 @@ const Header = () => {
       <div className="bg-slate-800 text-white h-14">
         <ul className="flex justify-center items-center h-full">
           <li className="px-4 ">
-            <NavLink href={"/home-page"}>Home</NavLink>
+            <NavLink href={"/admin-home-page"}>Home</NavLink>
           </li>
           <li className="px-4">
             <NavLink href={"/users-data"}> Users</NavLink>
@@ -110,7 +110,7 @@ const Header = () => {
           <NavLink href={`/cart/${user.id}`} className="relative">
   Cart
   {cartCount > 0 && (
-    <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-green-600 rounded-full z-10">
+    <span className="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-700 rounded-full z-10">
       {cartCount}
     </span>
   )}
