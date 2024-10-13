@@ -102,12 +102,17 @@ const Card = ({ product, cartData }) => {
             <FaMinus />
           </button>
         </div>
+        <div>  <strong>Size:</strong> {product.ProductSize}</div>
+        <div className="mb-2">  <strong>Price:</strong> {product.ProductPrice} Rs</div>
 
         <div className="pb-2">
           {!cartData.length > 0 ? (
             <button
-              className="py-1 px-2 me-6 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+              className={`py-1 px-2 me-6  ${
+                qty == 0 ? "cursor-not-allowed bg-gray-200 rounded": "bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+              }`}
               onClick={addToCartFunction }
+              disabled={qty == 0}
             >
               Add to Cart
             </button>
