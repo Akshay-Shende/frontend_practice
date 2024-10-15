@@ -17,7 +17,7 @@ const AddProduct = ( props) => {
   );
   const [image, setImage]     = useState(null);
   const [product, setProduct] = useState({
-    ProductName: "",
+    ProductName:"",
     ProductDescription: "",
     ProductSize: "",
     ProductUnit: null,
