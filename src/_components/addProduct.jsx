@@ -27,21 +27,24 @@ const AddProduct = ( props) => {
   });
 
   useEffect(() => {
-    console.log(props);
-    console.log(typeof props);
-
+    (async () => {
+      const res = await getManufacturers();
+      setManufacturers(res.documents);
+    })();
+  }, []);
+  useEffect(() => {
     (async () => {   
       if (typeof props.productPropsId === "string" && props.productPropsId !== "product-registration") {
         setLoading(true);
         const product = await getProduct(props.productPropsId);
         setProduct(product);
         setImagePreview(product.ProductImageUrl);
-        const res = await getManufacturers();
-        setManufacturers(res.documents);
+        console.log(res.documents);
+        
         setLoading(false);
       }
     })();
-  }, [props.productPropsId]);
+  }, [props.productPropsId,manufacturers]);
 
   const { createProduct } = useProducts();
   const { createFile } = useFiles();
