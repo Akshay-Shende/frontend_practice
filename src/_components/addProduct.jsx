@@ -39,7 +39,6 @@ const AddProduct = ( props) => {
         const product = await getProduct(props.productPropsId);
         setProduct(product);
         setImagePreview(product.ProductImageUrl);
-        console.log(res.documents);
         
         setLoading(false);
       }
