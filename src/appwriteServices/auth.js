@@ -22,11 +22,14 @@ const useAuth = () => {
   const login = async (email, password) => {
     try {
       const session = await account.createEmailPasswordSession(email, password);
+      console.log("Session:", session);
+      
+
       const user = await account.get();
       setLoggedInUser(user);
       return user;
     } catch (error) {
-      console.error("Login failed:", error);
+      console.log("Login failed:", error);
       return false;
     }
   };

@@ -4,9 +4,6 @@ import { useParams } from "next/navigation";
 
 const Page = () => {
   const { productId } = useParams();
-  console.log(productId);
-  console.log(typeof productId);
-
   return (
     <>
     {typeof productId == "string" ? (
