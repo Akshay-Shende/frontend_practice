@@ -19,7 +19,7 @@ const Page = () => {
   const { getRoles } = useRoles();
   const { loading, setLoading } = useContext(LoadingContext);
   const router = useRouter();
-  
+
   useEffect(() => {
     (async () => {
       try {
@@ -159,7 +159,7 @@ const Page = () => {
           Register
         </button>
         <div className="mt-4 text-center">
-        <span>have a account?</span> <NavLink href={"/login"}>login </NavLink> </div>
+        <span>Have an account?</span><span className="hover:text-blue-700 hover:underline"><NavLink href={"/login"}>login </NavLink> </span> </div>
       </form>
     </div>
   );

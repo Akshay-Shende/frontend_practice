@@ -99,7 +99,7 @@ const Page = () => {
 
         <p className="mt-4 text-center text-sm text-gray-600">
         Don&apos;t have an account?
-          <NavLink href={"/registration"}>Sign up</NavLink>
+          <span className="hover:text-blue-700 hover:underline"><NavLink href={"/registration"}>Sign up</NavLink></span>
         </p>
       </form>
     </div>
