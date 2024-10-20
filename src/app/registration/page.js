@@ -4,6 +4,8 @@ import useAuth from "@/appwriteServices/auth";
 import useRoles from "@/appwriteServices/roleServices";
 import { LoadingContext } from "@/context/loadingContext";
 import Spinner from "@/_components/spinner";
+import { useRouter } from "next/navigation";
+import NavLink from "@/_components/navLink";
 
 const Page = () => {
   const [email, setEmail]       = useState("");
@@ -16,7 +18,8 @@ const Page = () => {
   const { registerUser } = useAuth();
   const { getRoles } = useRoles();
   const { loading, setLoading } = useContext(LoadingContext);
-
+  const router = useRouter();
+  
   useEffect(() => {
     (async () => {
       try {
@@ -155,6 +158,8 @@ const Page = () => {
         >
           Register
         </button>
+        <div className="mt-4 text-center">
+        <span>have a account?</span> <NavLink href={"/login"}>login </NavLink> </div>
       </form>
     </div>
   );
