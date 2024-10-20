@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { LoadingContext } from "@/context/loadingContext";
 import Spinner from "./spinner";
+import { Toaster, toast } from 'sonner'
 
-const AddProduct = ( props) => {
+const AddProduct = (props) => {
   const { loading, setLoading } = useContext(LoadingContext);
   const { getProduct } = useProducts();
   const { getManufacturers } = useManufacturer();
@@ -15,9 +16,9 @@ const AddProduct = ( props) => {
   const [imagePreview, setImagePreview] = useState(
     "https://via.placeholder.com/150"
   );
-  const [image, setImage]     = useState(null);
+  const [image, setImage] = useState(null);
   const [product, setProduct] = useState({
-    ProductName:"",
+    ProductName: "",
     ProductDescription: "",
     ProductSize: "",
     ProductUnit: null,
@@ -33,27 +34,54 @@ const AddProduct = ( props) => {
     })();
   }, []);
   useEffect(() => {
-    (async () => {   
-      if (typeof props.productPropsId === "string" && props.productPropsId !== "product-registration") {
+    (async () => {
+      if (
+        typeof props.productPropsId === "string" &&
+        props.productPropsId !== "product-registration"
+      ) {
         setLoading(true);
         const product = await getProduct(props.productPropsId);
         setProduct(product);
         setImagePreview(product.ProductImageUrl);
-        
+
         setLoading(false);
       }
     })();
-  }, [props.productPropsId,manufacturers]);
+  }, [props.productPropsId, manufacturers]);
 
-  const { createProduct } = useProducts();
+  const { createProduct, updateProduct } = useProducts();
   const { createFile } = useFiles();
 
   const submitProduct = async (e) => {
     e.preventDefault();
     //By default Number also considering as a string so, passing parameter like this.
     const res = await createFile(image);
-    console.log(res);
-    if (res.$id) {
+
+    if (
+      typeof props.productPropsId === "string" &&
+      props.productPropsId !== "product-registration"
+    ) {
+      console.log("update product in method");
+      
+      const response = await updateProduct(props.productPropsId, {
+        ProductName: product.ProductName,
+        ProductDescription: product.ProductDescription,
+        ProductSize: product.ProductSize,
+        ProductUnit: Number(product.ProductUnit),
+        ProductInventoryLevel: Number(product.ProductInventoryLevel),
+        ProductPrice: Number(product.ProductPrice),
+        ManuId: product.ManuId,
+        ProductImageUrl: res.$id,
+      });
+
+      if(response != false) {
+        toast.success("Product updated successfully");
+      }
+      else {
+       toast.error("product update failed");
+      }
+    }
+    else {
       const productRes = await createProduct({
         ProductName: product.ProductName,
         ProductDescription: product.ProductDescription,
@@ -252,23 +280,22 @@ const AddProduct = ( props) => {
             </option>
           ))}
         </select>
-        {
-          (props.productPropsId && props.productPropsId == 'product-registration' ? (
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
-            >
-              Add Product
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="w-full py-2 px-4 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition duration-200"
-            >
-              Update Product
-            </button>
-          ))
-        }
+        {props.productPropsId &&
+        props.productPropsId == "product-registration" ? (
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+          >
+            Add Product
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition duration-200"
+          >
+            Update Product
+          </button>
+        )}
       </form>
     </div>
   );
