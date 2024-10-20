@@ -2,7 +2,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -13,27 +12,48 @@ import { useParams } from "next/navigation";
 import useCart from "@/appwriteServices/cartServices";
 import { LoadingContext } from "@/context/loadingContext";
 import Spinner from "@/_components/spinner";
+import { useDispatch } from "react-redux";
+import { decreaseCartCount } from "@/features/cart/cartSlice";
+import { useSelector } from "react-redux";
 
 const Page = () => {
-  const { getCartAndProductByUserId, getCartAndProductByUser } = useCart();
+  const { getCartAndProductByUserId, deleteCart } = useCart();
   const { loading, setLoading } = useContext(LoadingContext);
   const [result, setResult] = useState([]);
-
+  const [totalPrice, setTotalPrice] = useState(0);
   const { userId } = useParams();
-  useEffect( () => {
-    (async ()=>{
+  const dispatch = useDispatch();
+  const cartCount = useSelector((state) => state.cartReducer.cartCount);
+
+  const removeFromCart = async (id) => {
+    console.log("remove from cart", id);
     setLoading(true);
-    let result = await getCartAndProductByUserId(String(userId));
-    setResult(result);
+    const cartResult = await deleteCart(id);
+    dispatch(decreaseCartCount());
     setLoading(false);
-    })()
-  }, []);
+  };
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      let result = await getCartAndProductByUserId(String(userId));
+      setResult(result);
+      // Calculate the total price here using reduce function
+      const calculatedTotal = result.reduce((acc, item) => {
+        return acc + item.Qty * parseFloat(item.productDetails.ProductPrice);
+      }, 0);
+
+      setTotalPrice(calculatedTotal);
+      setLoading(false);
+    })();
+  }, [cartCount]);
+
   if (loading) {
     return <Spinner />;
   }
+
   return (
     <div className="px-14">
-      
       <Table>
         <TableHeader>
           <TableRow>
@@ -56,10 +76,10 @@ const Page = () => {
                 {item.Qty * parseFloat(item.productDetails.ProductPrice)}
               </TableCell>
               <TableCell className="text-right">
-                <button className="my-2 py-2 px-4 bg-green-600 text-white rounded hover:bg-green-700 transition duration-200">
-                  Buy
-                </button>
-                <button className="ms-3 py-2 px-4 bg-red-600 text-white rounded hover:bg-red-700 transition duration-200">
+                <button
+                  className="ms-3 py-2 px-4 bg-red-600 text-white rounded hover:bg-red-700 transition duration-200"
+                  onClick={() => removeFromCart(item.$id)}
+                >
                   Delete
                 </button>
               </TableCell>
@@ -67,6 +87,12 @@ const Page = () => {
           ))}
         </TableBody>
       </Table>
+      <div>
+        <strong>Total Price : {totalPrice.toFixed(2)} </strong>
+      </div>
+      <button className="my-2 py-2 px-4 bg-green-600 text-white rounded hover:bg-green-700 transition duration-200">
+        Buy
+      </button>
     </div>
   );
 };
