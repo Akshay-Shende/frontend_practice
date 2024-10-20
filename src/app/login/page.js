@@ -2,16 +2,14 @@
 import { useState, useContext } from "react";
 import useAuth from "@/appwriteServices/auth";
 import { useSelector, useDispatch } from "react-redux";
-import { account } from "../appWrite";
 import { useRouter } from "next/navigation";
 import {
   addLogInUser,
-  deleteLogInUser,
 } from "@/features/logInUser/logInUserSlice";
 import NavLink from "@/_components/navLink";
 import { LoadingContext } from "@/context/loadingContext";
 import Spinner from "@/_components/spinner";
-import { Role } from "appwrite";
+import { Toaster, toast } from 'sonner'
 
 const Page = () => {
   const [email, setEmail] = useState("");
@@ -23,8 +21,16 @@ const Page = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    let loginResult = await login(email, password);     
+    let loginResult = await login(email, password);  
+    
+ if(loginResult ==false){
+  toast.error('Invalid Credentials')
+  console.log("Invalid Credentials");
+  
+  // alert("Invalid Credentials");
     setLoading(false);
+    return;
+ }
     dispatch(
       addLogInUser({
         name: loginResult.name,

@@ -12,6 +12,7 @@ import { useContext } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { increaseCartCount, decreaseCartCount } from "@/features/cart/cartSlice";
 import { useRouter } from "next/navigation";
+import { Toaster, toast } from 'sonner'
 
 const Card = ({ product, cartData }) => {
   const { getFilePreview } = useFiles();
@@ -61,9 +62,15 @@ const Card = ({ product, cartData }) => {
 
     setLoading(true);
     const cartResult = await addToCart(cart);
+
+    if(cartResult != false) {
+      toast.success("Product Added to Cart");
+    }
+
     dispatch(increaseCartCount())
     setLoading(false);
   };
+
   const removeFromCart = async () => {
     if(cartData.length > 0) {
       setLoading(true);
